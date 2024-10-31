@@ -1,0 +1,55 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# Logs
+logs
+*.log
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Dist
+dist/
+build/
+out/
+
+# OS
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Editor directories and files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Misc
+*.swp
+*.swo
+*.sublime-* 
+
+# Coverage
+coverage/
+*.lcov
+
+# Testing
+test/
+tests/
+__tests__/
+
+# Temporary files
+*.tmp
+*.temp
