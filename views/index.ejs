@@ -1,11 +1,110 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Control de Asistencia - Universidad de Medellín</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+
+<body>
+  <div class="header">
+    <h1>Control de Asistencia - Universidad de Medellín</h1>
+    <a href="/profesor" class="profesor-btn">Soy profesor</a>
+  </div>
+
+  <div id="lista-estudiantes"></div>
+
+  <script>
+    const socket = new WebSocket('ws://localhost:3000');
+
+    socket.onopen = () => {
+      console.log("Conexión WebSocket establecida");
+      cargarEstudiantes();
+    };
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+
+      if (data.estudiantes) {
+        data.estudiantes.forEach(estudiante => {
+          const boton = document.getElementById(`asistencia-${estudiante.nombre.replace(/\s+/g, '-')}`);
+          if (boton) {
+            boton.disabled = !estudiante.habilitado;
+          }
+        });
+      }
+    };
+
+    async function cargarEstudiantes() {
+      const response = await fetch('/estudiantes');
+      const estudiantes = await response.json();
+      const listaEstudiantes = document.getElementById('lista-estudiantes');
+
+      estudiantes.forEach(estudiante => {
+        const divEstudiante = document.createElement('div');
+        divEstudiante.className = 'estudiante';
+
+        const img = document.createElement('img');
+        img.src = estudiante.imagen;
+        img.alt = estudiante.nombre;
+        img.onerror = function () {
+          img.src = './images/f1.png';
+        };
+
+        const nombre = document.createElement('span');
+        nombre.textContent = estudiante.nombre;
+
+        const asistencias = document.createElement('span');
+        asistencias.textContent = `Asistencias: ${estudiante.asistencias}`;
+
+        const botonAsistencia = document.createElement('button');
+        botonAsistencia.textContent = "Registrar Asistencia";
+        botonAsistencia.id = `asistencia-${estudiante.nombre.replace(/\s+/g, '-')}`;
+        botonAsistencia.disabled = true;
+        botonAsistencia.onclick = () => registrarAsistencia(estudiante.nombre);
+
+        divEstudiante.appendChild(img);
+        divEstudiante.appendChild(nombre);
+        divEstudiante.appendChild(asistencias);
+        divEstudiante.appendChild(botonAsistencia);
+
+        listaEstudiantes.appendChild(divEstudiante);
+      });
+    }
+
+    async function registrarAsistencia(nombreEstudiante) {
+      const response = await fetch('/registrar-asistencia', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ nombre: nombreEstudiante })
+      });
+
+      if (response.ok) {
+        alert(`${nombreEstudiante} ha sido registrado.`);
+        deshabilitarTodosLosBotones(true);
+        document.getElementById('lista-estudiantes').innerHTML = '';
+        cargarEstudiantes();
+      } else {
+        console.error("Error al registrar asistencia:", response.statusText);
+      }
+    }
+
+    async function deshabilitarTodosLosBotones(bool) {
+      const estudiantesElements = document.getElementsByClassName('estudiante');
+
+      for (let i = 0; i < estudiantesElements.length; i++) {
+        const botonAsistencia = estudiantesElements[i].querySelector('button');
+        if (botonAsistencia) {
+          botonAsistencia.disabled = bool;
+        }
+      }
+    }
+  </script>
+  <footer>
+    <p>&copy; 2024 Universidad de Medellín</p>
+  </footer>
+</body>
+
 </html>

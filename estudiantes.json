@@ -2,31 +2,37 @@
   {
     "nombre": "Guillermo Andres Duque Pineda",
     "imagen": "https://uvirtual.udemedellin.edu.co/pluginfile.php/858241/user/icon/bambuco/f1?rev=34278957",
-    "asistencias": 2
+    "asistencias": 5,
+    "asistido": false
   },
   {
     "nombre": "David Esteban Lasso Herrera",
     "imagen": "https://uvirtual.udemedellin.edu.co/pluginfile.php/843135/user/icon/bambuco/f1?rev=34198611",
-    "asistencias": 1
+    "asistencias": 4,
+    "asistido": false
   },
   {
     "nombre": "Carlos Mario Lopez Pestana",
     "imagen": "https://uvirtual.udemedellin.edu.co/pluginfile.php/523409/user/icon/bambuco/f1?rev=26797526",
-    "asistencias": 1
+    "asistencias": 3,
+    "asistido": true
   },
   {
     "nombre": "Alejandro Marin Henao",
     "imagen": "https://uvirtual.udemedellin.edu.co/pluginfile.php/598481/user/icon/bambuco/f1?rev=34325625",
-    "asistencias": 1
+    "asistencias": 2,
+    "asistido": false
   },
   {
     "nombre": "Simon Miranda Rendon",
     "imagen": "https://uvirtual.udemedellin.edu.co/pluginfile.php/709330/user/icon/bambuco/f1?rev=17726658",
-    "asistencias": 1
+    "asistencias": 4,
+    "asistido": false
   },
   {
     "nombre": "Santiago Tuberquia Correa",
     "imagen": "https://uvirtual.udemedellin.edu.co/pluginfile.php/523527/user/icon/bambuco/f1?rev=26904242",
-    "asistencias": 1
+    "asistencias": 3,
+    "asistido": false
   }
 ]

@@ -1,0 +1,73 @@
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <title>Control de Asistencia - Universidad de Medellín</title>
+</head>
+
+<body>
+    <div class="header">
+        <h1>Control de Asistencia - Universidad de Medellín</h1>
+        <a href="/" class="profesor-btn">Soy estudiante</a>
+    </div>
+    <button onclick="nuevoDia()">Nuevo dia</button>
+    <div id="lista-estudiantes"></div>
+
+    <script>
+        const socket = new WebSocket('ws://localhost:3000');
+
+        socket.onopen = () => {
+            console.log("Conexión WebSocket establecida");
+            cargarEstudiantes();
+        };
+
+        socket.onmessage = (event) => {
+            cargarEstudiantes();
+        };
+
+        async function cargarEstudiantes() {
+            const response = await fetch('/estudiantes');
+            const estudiantes = await response.json();
+            const listaEstudiantes = document.getElementById('lista-estudiantes');
+            listaEstudiantes.innerHTML = '';
+
+            estudiantes.forEach(estudiante => {
+                const divEstudiante = document.createElement('div');
+                divEstudiante.className = 'estudiante';
+
+                const img = document.createElement('img');
+                img.src = estudiante.imagen;
+                img.alt = estudiante.nombre;
+                img.onerror = function () {
+                    img.src = './images/f1.png';
+                };
+
+                const nombre = document.createElement('span');
+                nombre.textContent = estudiante.nombre;
+
+                const asistencias = document.createElement('span');
+                asistencias.textContent = `Asistencias: ${estudiante.asistencias}`;
+
+                divEstudiante.appendChild(img);
+                divEstudiante.appendChild(nombre);
+                divEstudiante.appendChild(asistencias);
+                listaEstudiantes.appendChild(divEstudiante);
+            });
+        }
+        async function nuevoDia() {
+            const response = await fetch('/nuevo-dia', {
+                method: 'POST'
+            });
+            const estudiantes = await response.json();
+            alert('Bienvenido! Feliz dia');
+            cargarEstudiantes();
+        }
+    </script>
+    <footer>
+        <p>&copy; 2024 Universidad de Medellín</p>
+    </footer>
+</body>
+
+</html>
